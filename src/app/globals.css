@@ -12,12 +12,30 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
+@layer components {
+  .nav-link {
+    @apply h-full flex items-center border-zinc-900 hover:border-b-2 cursor-pointer;
+  }
+
+  .panel {
+    @apply bg-zinc-200 rounded-md p-2;
+  }
+
+  .button {
+    @apply bg-zinc-400 hover:bg-zinc-600 cursor-pointer rounded-md py-0.5 px-2 outline-1 text-lg
+  }
+
+  .input-field {
+    @apply outline rounded-md px-2 py-1 block min-w-md max-w-xl;
+  }
+}
+
+/* @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
-}
+} */
 
 body {
   background: var(--background);
