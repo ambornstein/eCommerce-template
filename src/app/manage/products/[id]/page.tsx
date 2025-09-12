@@ -1,10 +1,10 @@
 'use client'
 
 import { createOrUpdateProduct } from "@/lib/actions";
-import { ProductFormElements } from "../new/page";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ProductData } from "@/lib/types";
+import ProductFormElements from "@/components/ProductFormElements";
 
 export default function EditProductPage() {
     const params = useParams<{ id: string }>()
