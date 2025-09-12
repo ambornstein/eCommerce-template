@@ -1,11 +1,12 @@
 'use client'
 
+import { ProductData } from "@/lib/types";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function ProductDashboard() {
-    const [products, setProducts] = useState<any[]>()
+    const [products, setProducts] = useState<ProductData[]>()
     useEffect(() => {
         fetchProducts()
     }, [])
