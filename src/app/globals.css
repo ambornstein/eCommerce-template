@@ -30,6 +30,12 @@
   }
 }
 
+@layer utilities {
+  .center {
+    @apply flex justify-center items-center
+  }
+}
+
 /* @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
