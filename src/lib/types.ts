@@ -7,4 +7,5 @@ export interface ProductData {
     description: string,
     price: number,
     category?: number
+    images?: string[]
 }

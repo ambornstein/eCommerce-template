@@ -4,7 +4,8 @@ export const ProductSchema = new mongoose.Schema({
     name: String,
     price: { type: Number, min: 0},
     description: String,
-    category: { type: String, required: false}
+    category: { type: String, required: false},
+    images: { type: [String], requred: false}
 })
 
 export const Product = mongoose.models.Product || mongoose.model("Product", ProductSchema)

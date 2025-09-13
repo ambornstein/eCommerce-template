@@ -15,7 +15,7 @@ async function dbConnect() {
     if (cached.conn) return cached.conn
 
     if (!mongoConnString) {
-        throw new Error("MONGODB URI bever defined for environment. No found database connection point.")
+        throw new Error("MONGODB URI not defined for environment. No found database connection point.")
     }
 
     if (!cached.promise) {

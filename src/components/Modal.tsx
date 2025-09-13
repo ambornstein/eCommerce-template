@@ -20,10 +20,10 @@ export default function Modal({ children, isOpen, setIsOpen }: ModalProps) {
     if (!isOpen) return null
 
     return (
-        <div className="fixed top-0 left-0 w-full h-screen center">
+        <div className="absolute top-0 left-0 w-screen h-full center">
             <div onClick={close} className="w-full h-full bg-stone-800/90" />
-            <div className="flex flex-col fixed w-lg h-fit bg-slate-300 p-4">
-                <MdClose onClick={close} className="self-end w-fit mb-4" />
+            <div className="flex flex-col absolute w-lg h-fit bg-slate-300 p-4">
+                <MdClose onClick={close} className="self-end w-fit mb-4 cursor-pointer" />
                 {children}
             </div>
         </div>)
