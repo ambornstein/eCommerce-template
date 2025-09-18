@@ -7,24 +7,27 @@ export interface ModalProps {
     children: React.ReactNode,
     isOpen: boolean,
     setIsOpen: (value: boolean) => void
+    lockScrolling?: boolean
 }
 
-export default function Modal({ children, isOpen, setIsOpen }: ModalProps) {
+export default function Modal(props: ModalProps) {
 
-    const close = () => setIsOpen(false)
+    const close = () => props.setIsOpen(false)
 
     useEffect(() => {
-        if (document != undefined) document.body.style.overflow = isOpen ? "hidden" : "unset"
-    }, [isOpen])
+        if (document != undefined && props.lockScrolling) {
+            document.body.style.overflow = props.isOpen ? "hidden" : "unset"
+        }
+    }, [props.isOpen])
 
-    if (!isOpen) return null
+    if (!props.isOpen) return null
 
     return (
-        <div className="absolute top-0 left-0 w-screen h-full center">
-            <div onClick={close} className="w-full h-full bg-stone-800/90" />
-            <div className="flex flex-col absolute w-lg h-fit bg-slate-300 p-4">
-                <MdClose onClick={close} className="self-end w-fit mb-4 cursor-pointer" />
-                {children}
+        <div className="fixed top-0 left-0 w-screen h-full center">
+            <div onClick={close} className="w-full h-full bg-zinc-600/50" />
+            <div className="flex flex-col absolute w-lg h-fit bg-slate-300">
+                <MdClose onClick={close} className="self-end w-fit my-4 mr-4 cursor-pointer size-6" />
+                {props.children}
             </div>
         </div>)
 }

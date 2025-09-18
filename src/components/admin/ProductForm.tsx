@@ -2,13 +2,10 @@
 
 import { ProductData } from "@/lib/types";
 import ImageUploadPanel from "./ImageUploadPanel";
-import { createOrUpdateProduct } from "@/lib/actions";
-import { useActionState, useEffect, useState } from "react";
-import { useFormStatus } from "react-dom";
+import { FormEvent, useEffect, useState } from "react";
 import { redirect } from "next/navigation";
 
-
-export default function ProductForm(props: { product?: ProductData }) {
+export default function ProductForm(props: { product?: ProductData, fetchProduct: () => void }) {
     const [images, setImages] = useState<string[]>([])
 
     function addImages(imageNames: string[]) {
@@ -19,19 +16,44 @@ export default function ProductForm(props: { product?: ProductData }) {
         setImages(i => [...i.slice(0, index), ...i.slice(index + 1)])
     }
 
+    async function handleSubmit(e: FormEvent) {
+        e.preventDefault()
+
+        const formData = new FormData(e.target as HTMLFormElement)
+
+        if (props.product) {
+            await fetch("/api/product/" + props.product._id, {
+                method: "PATCH",
+                body: formData
+            })
+        }
+        else {
+            await fetch("/api/product", {
+                method: "POST",
+                body: formData
+            })
+        }
+
+        redirect('/manage/products')
+    }
+
+    function handleDelete(e: React.MouseEvent<HTMLButtonElement>) {
+        e.preventDefault()
+        if (confirm("Really delete product " + props.product?.name + "?")) {
+            fetch("/api/product/" + props.product?._id, { method: "DELETE" }).then((_i) => redirect('/manage/products'))
+        }
+    }
+
     useEffect(() => {
         if (props.product) setImages(props.product.images!)
     }, [props.product])
 
     return <div className="flex gap-4">
-        <form className="flex flex-col gap-2" action={async (e) => {
-            createOrUpdateProduct(e)
-            redirect('/manage/products')
-        }}>
+        <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
             <input type="hidden" name="id" defaultValue={props.product?._id} />
             {images?.map((i, j) => <input type="hidden" name="image" value={i} key={j} />)}
             <div className="panel flex flex-col gap-4 w-fit">
-                <label>Title
+                <label>Product Name
                     <input name="name" type="text" className="input-field" defaultValue={props.product?.name} />
                 </label>
                 <label>Description
@@ -48,8 +70,8 @@ export default function ProductForm(props: { product?: ProductData }) {
                 </label>
             </div>
             <div className="self-end space-x-2">
-                {props.product && <button className="button w-fit">Delete</button>}
-                <input type="submit" className="button " />
+                <input type="submit" className="button" />
+                {props.product && <button className="button w-fit" onClick={handleDelete}>Delete</button>}
             </div>
         </form>
         <div className="h-full w-full">

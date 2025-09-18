@@ -1,0 +1,1 @@
+export const imageBaseUrl = 'https://sbxqe6uvicryn85x.public.blob.vercel-storage.com/'

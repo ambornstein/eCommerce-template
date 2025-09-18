@@ -3,16 +3,17 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ProductData } from "@/lib/types";
-import ProductForm from "@/components/ProductForm";
+import ProductForm from "@/components/admin/ProductForm";
 
 export default function EditProductPage() {
     const params = useParams<{ id: string }>()
     const [product, setProduct] = useState<ProductData>()
 
-    useEffect(() => {
-        if (!params.id) return
-        fetch('/api/product/' + params.id).then(res => res.json()).then(data => setProduct(data))
-    }, [params.id])
+    const fetchProduct = () => fetch('/api/product/' + params.id).then(res => res.json()).then(data => setProduct(data))
 
-    return <ProductForm product={product}/>
+    useEffect(() => {
+        fetchProduct()
+    }, [])
+
+    return <ProductForm fetchProduct={fetchProduct} product={product}/>
 }

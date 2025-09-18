@@ -1,14 +1,24 @@
-import Image from "next/image"
+import { imageBaseUrl } from "@/lib/config"
+import { ProductData } from "@/lib/types"
+import { useShoppingCart } from "./context/ShoppingCartContext"
+import { useState } from "react"
+import ProductQuickBuy from "./ProductQuickBuy"
+import Modal from "./Modal"
 
-export default function ProductPanel() {
-    return <div className="flex flex-col items-center bg-zinc-300">
-        <Image width={100} height={100} src={'/favicon.ico'} alt='Home' className="w-auto" />
-        <button></button>
-        <dl className="grid grid-cols-2 grid-rows-2 items-center place-items-center">
-            <dt>Product Name</dt>
-            <dd>$5</dd>
-            <dt>In stock:</dt>
-            <dd>12</dd>
+export default function ProductPanel(props: { product: ProductData }) {
+    const [quickBuyOpen, setQuickBuyOpen] = useState(false)
+
+    const imageURL = props.product.images![0] ? imageBaseUrl + props.product.images![0] : '/file.svg'
+
+    return <div className="flex flex-col gap-8 bg-zinc-300 p-2 overflow-hidden border-c">
+        <img src={imageURL} alt='Home' className="object-contain h-full hover:scale-110 transition-all" />
+        <button className="w-48 outline-1 text-center p-2 self-center" onClick={() => setQuickBuyOpen(true)}>Quick Buy</button>
+        <dl className="*:block text-lg">
+            <dd>{props.product.name}</dd>
+            <dd>${props.product.price}</dd>
         </dl>
+        <Modal isOpen={quickBuyOpen} setIsOpen={(value) => setQuickBuyOpen(value)}>
+            <ProductQuickBuy product={props.product} />
+        </Modal>
     </div>
 }

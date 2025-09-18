@@ -22,7 +22,7 @@
   }
 
   .button {
-    @apply bg-zinc-400 hover:bg-zinc-600 cursor-pointer rounded-md py-0.5 px-2 outline-1 text-lg
+    @apply bg-zinc-900 hover:bg-zinc-700 cursor-pointer py-0.5 px-2 text-lg text-zinc-200
   }
 
   .input-field {
@@ -33,6 +33,10 @@
 @layer utilities {
   .center {
     @apply flex justify-center items-center
+  }
+
+  .outline-round {
+    @apply rounded-lg outline-1 outline-zinc-400
   }
 }
 
