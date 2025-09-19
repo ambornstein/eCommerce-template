@@ -6,7 +6,7 @@ import { CgClose } from "react-icons/cg"
 import { imageBaseUrl } from "@/lib/config"
 
 const ImageChip = (props: { imageUrl: string, imageName: string, remove: () => void }) => {
-    return <div className="h-fit w-64 p-1 grid grid-cols-[auto_1fr_20px] gap-2 items-center outline-1 outline-zinc-700 rounded-md ">
+    return <div className="h-fit w-full p-1 grid grid-cols-[auto_1fr_20px] gap-2 items-center panel-outline ">
         <img className="object-contain size-24" src={props.imageUrl} />
         <p>{props.imageName}</p>
         <CgClose onClick={props.remove} />
@@ -66,8 +66,8 @@ export default function ImageUploadPanel(props: ImagePanelProps) {
         props.addImages(images.map(m => m.toString()))
     }
 
-    return <div className="panel" >
-        <div className="flex flex-col gap-4 items-center" >
+    return <div>
+        <div className="flex flex-col gap-4 items-center">
             <div className="rounded-lg outline cursor-pointer w-full place-items-center" onClick={() => setMenuOpen(!menuOpen)}>
                 <BiPlus className="size-12" />
                 <p>Add Images</p>
@@ -78,8 +78,8 @@ export default function ImageUploadPanel(props: ImagePanelProps) {
         </div>
 
         <Modal setIsOpen={setMenuOpen} isOpen={menuOpen}>
-            <div className="flex flex-col gap-4 p-4">
-                <label htmlFor="dropzone-file" className="flex flex-col justify-center items-center outline-dashed outline-2 rounded-lg outline-zinc-700 w-full h-36 cursor-pointer hover:bg-zinc-300 ">
+            <div className="flex flex-col gap-4 p-4 max-w-2xl">
+                <label htmlFor="dropzone-file" className="h-36 mt-4 flex flex-col justify-center items-center outline-dashed outline-2 rounded-lg outline-zinc-700 cursor-pointer hover:bg-zinc-300 ">
                     <img className="size-12" src='/image.svg' />
                     <p><b>Click to upload image</b></p>
                     <input id="dropzone-file" type="file" accept="image/jpeg, image/png" className="hidden" onChange={uploadImage} />

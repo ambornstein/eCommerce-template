@@ -28,6 +28,7 @@ export async function POST(request: NextRequest) {
 
         return NextResponse.json(products)
     } catch (e) {
+        console.log(e)
         if (e instanceof Error) {
             return new NextResponse(e.message, { status: 500 })
         }

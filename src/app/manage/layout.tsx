@@ -5,7 +5,7 @@ export default function ManagementLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    return <div className={`m-auto py-4 max-w-3xl grid grid-cols-[max-content_1fr] gap-4`}>
+    return <div className={"m-auto max-w-3xl min-h-96 py-4 grid grid-cols-[max-content_1fr] gap-4"}>
         <div className="flex flex-col gap-4 panel sticky p-2 h-fit">
             <Link href="/manage">Dashboard</Link>
             <Link href="/manage/products">Products</Link>

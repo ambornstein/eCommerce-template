@@ -1,18 +1,15 @@
-'use client'
-
-import { ProductData } from "@/lib/types"
-import { useEffect, useState } from "react"
+import { Suspense} from "react"
 import ProductPanel from "./ProductPanel"
+import { ProductData } from "@/lib/types"
+import { getBaseUrl } from "@/lib/util"
 
-export default function ProductDisplay() {
-    const [products, setProducts] = useState<ProductData[]>()
-    const fetchProducts = () => fetch('/api/product').then(res => res.json()).then(data => setProducts(data))
+export default async function ProductDisplay() {
+    const data = await fetch(`${getBaseUrl()}/api/product`)
+    const products = await data.json()
 
-    useEffect(() => {
-        fetchProducts()
-    }, [])
-
-    return <div className="grid grid-cols-4 gap-8">
-        {products?.map(pr => <ProductPanel product={pr} />)}
+    return <div className="m-auto max-w-[90%] grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4">
+        <Suspense fallback={<p>Hello</p>}>
+            {products?.map((pr: ProductData) => <ProductPanel product={pr} />)}
+        </Suspense>
     </div>
 }

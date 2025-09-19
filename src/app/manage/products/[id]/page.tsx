@@ -1,19 +1,12 @@
-'use client'
-
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { ProductData } from "@/lib/types";
 import ProductForm from "@/components/admin/ProductForm";
+import { getBaseUrl } from "@/lib/util";
 
-export default function EditProductPage() {
-    const params = useParams<{ id: string }>()
-    const [product, setProduct] = useState<ProductData>()
+export default async function EditProductPage({ params }: {
+    params: Promise<{ id: string }>
+}) {
+    const id = (await params).id
+    const data = await fetch(`${getBaseUrl()}/api/product/${id}`)
+    const product = await data.json()
 
-    const fetchProduct = () => fetch('/api/product/' + params.id).then(res => res.json()).then(data => setProduct(data))
-
-    useEffect(() => {
-        fetchProduct()
-    }, [])
-
-    return <ProductForm fetchProduct={fetchProduct} product={product}/>
+    return <ProductForm product={product}/>
 }

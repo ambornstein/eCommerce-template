@@ -18,7 +18,7 @@
   }
 
   .panel {
-    @apply bg-zinc-200 rounded-md p-2;
+    @apply bg-zinc-200 rounded-md;
   }
 
   .button {
@@ -26,7 +26,11 @@
   }
 
   .input-field {
-    @apply outline rounded-md px-2 py-1 block min-w-md max-w-xl;
+    @apply outline rounded-md px-2 py-1 outline-zinc-600;
+  }
+
+  .cart-button {
+    @apply bg-red-600 text-zinc-200 rounded-lg h-full;
   }
 }
 
@@ -35,8 +39,12 @@
     @apply flex justify-center items-center
   }
 
-  .outline-round {
+  .panel-outline {
     @apply rounded-lg outline-1 outline-zinc-400
+  }
+
+  .panel-shadow {
+    @apply drop-shadow-sm drop-shadow-neutral-600
   }
 }
 

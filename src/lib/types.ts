@@ -3,9 +3,10 @@
 
 export interface ProductData {
     _id: string
-    name: string,
-    description: string,
-    price: number,
+    name: string
+    description: string
+    price: number
     category?: number
     images?: string[]
+    slugName: string
 }
