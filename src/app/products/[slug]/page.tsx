@@ -9,19 +9,19 @@ export default async function ProductPage({ params }: {
     const data = await fetch(`${getBaseUrl()}/api/product/slug/${slug}`)
     const product = await data.json()
 
-    return <div className="m-auto container min-h-screen flex flex-col items-center">
-        <div className="flex flex-row">
+    return <div className="m-auto container min-h-screen flex flex-col items-center gap-8 mt-4">
+        <div className="flex flex-row min-h-[600px]">
             <ImageGallery imageUrls={product.images!} />
-            <div className="w-sm bg-zinc-200">
-                <div>
-                    <h2>{product.name}</h2>
-                    <p>{product.price}</p>
+            <div className="w-sm h-fit sticky top-12 mt-4">
+                <div className="mb-12">
+                    <h2 className="text-2xl">{product.name}</h2>
+                    <h2 className="text-2xl">${product.price}</h2>
                 </div>
-                <AddToCart/>
+                <AddToCart product={product}/>
             </div>
         </div>
-        <div className="w-md">
-            <p className="w-md">{product.description}</p>
+        <div className="w-lg">
+            <p className="w-full">{product.description} fr fr fr fr fr fr fr </p>
         </div>
     </div>
 }

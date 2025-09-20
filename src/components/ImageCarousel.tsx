@@ -25,7 +25,7 @@ export default function ImageCarousel(props: { imageUrls: string[] }) {
                     setIndex(index - 1)
             }} />
             <FaArrowRight className="cursor-pointer" onClick={() => {
-                if (index + 1 <= props.imageUrls!.length)
+                if (index + 1 < props.imageUrls!.length)
                     setIndex(index + 1)
             }} />
         </div>
