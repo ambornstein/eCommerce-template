@@ -1,5 +1,5 @@
-import AddToCart from "@/components/AddToCart";
-import ImageGallery from "@/components/ImageGallery";
+import AddToCart from "@/components/input/AddToCart";
+import ImageGallery from "@/components/product/ImageGallery";
 import { getBaseUrl } from "@/lib/util";
 
 export default async function ProductPage({ params }: {

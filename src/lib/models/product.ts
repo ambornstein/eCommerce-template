@@ -1,4 +1,5 @@
 import mongoose from "mongoose"
+import { InventoryRecord } from "./inventoryRecord";
 
 export const ProductSchema = new mongoose.Schema({
     name: String,
@@ -9,12 +10,12 @@ export const ProductSchema = new mongoose.Schema({
     slugName: { type: String, required: false }
 })
 
-ProductSchema.pre('save', function (next) {
+ProductSchema.pre('save', function (next, options) {
     this.slugName = this.name!.toLowerCase()
         .replace(/ /g, "-")
         .replace(/[^\w-]+/g, "");
 
-    next()
+    InventoryRecord.updateOne({ product: this._id }, {}, { upsert: true }).then(() => next())
 })
 
 ProductSchema.post(/[Uu]pdate/, function (doc) {

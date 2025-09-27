@@ -10,3 +10,8 @@ export interface ProductData {
     images?: string[]
     slugName: string
 }
+
+export interface ItemOrderData {
+    product: ProductData,
+    quantity: number
+}

@@ -2,14 +2,16 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import Modal from "../Modal";
-import ProductQuickBuy from "../ProductQuickBuy";
+import ProductQuickBuy from "../product/ProductQuickBuy";
 import { ProductData } from "@/lib/types";
 
 const ShoppingCartContext = createContext({
     items: [] as CartItem[],
     addItem: (product: ProductData, quantity: number) => { },
     removeItem: (product: ProductData) => { },
-    reduceItem: (product: ProductData, quantity: number) => { },
+    setItemQuantity: (product: ProductData, quantity: number) => { },
+    getItemCount: (): number => 0,
+    getTotal: (): number => 0,
     loaded: false
 })
 
@@ -62,6 +64,10 @@ export function ShoppingCartProvider({
         return cartItems.reduce((sum, current) => sum + current.quantity, 0)
     }
 
+    function getTotal() {
+        return cartItems.reduce((sum, current) => sum + (current.product.price * current.quantity), 0)
+    }
+
     function findItem(id: string) {
         return cartItems.find((val) => val.product._id == id)
     }
@@ -78,19 +84,27 @@ export function ShoppingCartProvider({
     }
 
     function removeItem(product: ProductData) {
-        setCartItems(cartItems.filter((val) => val.product._id != product._id))
-        updateCart()
+        if (confirm(`Really delete ${product.name} from your cart?`)) {
+            setCartItems(cartItems.filter((val) => val.product._id != product._id))
+            updateCart()
+        }
     }
 
-    function reduceItem(product: ProductData, quantity: number) {
-        const item = findItem(product._id);
-        if (item) {
-            item.quantity -= quantity
+    function setItemQuantity(product: ProductData, quantity: number) {
+        const items = [...cartItems]
+        const itemIndex = items.findIndex((val) => val.product._id == product._id)
+        console.log(itemIndex)
+        if (itemIndex >= 0) {
+            items[itemIndex].quantity = quantity
+            setCartItems(items)
+        }
+        else {
+            addItem(product, quantity)
         }
         updateCart()
     }
 
-    return <ShoppingCartContext.Provider value={{ items: cartItems, removeItem, addItem, reduceItem, loaded }}>
+    return <ShoppingCartContext.Provider value={{ items: cartItems, removeItem, addItem, setItemQuantity, loaded, getItemCount, getTotal }}>
         {children}
     </ShoppingCartContext.Provider>
 }

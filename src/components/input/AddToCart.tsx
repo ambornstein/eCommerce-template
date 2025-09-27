@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import QuantityCounter from "./QuantityCounter"
-import { useShoppingCart } from "./context/ShoppingCartContext"
+import { useShoppingCart } from "../context/ShoppingCartContext"
 import { ProductData } from "@/lib/types"
 
 export default function AddToCart(props: { product: ProductData }) {

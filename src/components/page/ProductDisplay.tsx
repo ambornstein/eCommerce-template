@@ -1,5 +1,5 @@
 import { Suspense} from "react"
-import ProductPanel from "./ProductPanel"
+import ProductPanel from "../page/ProductPanel"
 import { ProductData } from "@/lib/types"
 import { getBaseUrl } from "@/lib/util"
 
