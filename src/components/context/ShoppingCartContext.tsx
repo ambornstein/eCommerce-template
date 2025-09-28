@@ -1,17 +1,17 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState } from "react";
-import Modal from "../Modal";
-import ProductQuickBuy from "../product/ProductQuickBuy";
 import { ProductData } from "@/lib/types";
 
 const ShoppingCartContext = createContext({
     items: [] as CartItem[],
+    justAdded: undefined as CartItem | undefined,
     addItem: (product: ProductData, quantity: number) => { },
     removeItem: (product: ProductData) => { },
     setItemQuantity: (product: ProductData, quantity: number) => { },
     getItemCount: (): number => 0,
     getTotal: (): number => 0,
+    dismissAdded: () => {},
     loaded: false
 })
 
@@ -26,6 +26,7 @@ export function ShoppingCartProvider({
     children: React.ReactNode;
 }>) {
     const [cartItems, setCartItems] = useState<CartItem[]>([])
+    const [justAdded, setJustAdded] = useState<CartItem | undefined>(undefined)
     const [loaded, setLoaded] = useState(false)
 
     useEffect(() => {
@@ -80,7 +81,13 @@ export function ShoppingCartProvider({
         else {
             setCartItems([...cartItems, { product: product, quantity }])
         }
+        setJustAdded({ product, quantity })
+        setTimeout(dismissAdded, 5000)
         updateCart()
+    }
+
+    function dismissAdded() {
+        setJustAdded(undefined)
     }
 
     function removeItem(product: ProductData) {
@@ -104,7 +111,7 @@ export function ShoppingCartProvider({
         updateCart()
     }
 
-    return <ShoppingCartContext.Provider value={{ items: cartItems, removeItem, addItem, setItemQuantity, loaded, getItemCount, getTotal }}>
+    return <ShoppingCartContext.Provider value={{ items: cartItems, justAdded, dismissAdded, removeItem, addItem, setItemQuantity, loaded, getItemCount, getTotal }}>
         {children}
     </ShoppingCartContext.Provider>
 }

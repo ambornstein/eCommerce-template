@@ -1,7 +1,7 @@
 import { ordersController } from "@/lib/paypal";
 import { ApiError } from "@paypal/paypal-server-sdk";
 
-export default async function POST(request: Request, { params }: { params: Promise<{ orderID: string }> }) {
+export async function POST(request: Request, { params }: { params: Promise<{ orderID: string }> }) {
     try {
         const { orderID } = await params
         const result = await captureOrder(orderID);

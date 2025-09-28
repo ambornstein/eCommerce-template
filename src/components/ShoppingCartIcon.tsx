@@ -5,9 +5,11 @@ import Link from "next/link"
 import { useState } from "react"
 import { useShoppingCart } from "./context/ShoppingCartContext"
 import ItemCart from "./ItemCart"
+import { CgClose } from "react-icons/cg"
+import { formatTotal, formatPrice } from "@/lib/util"
 
 export default function ShoppingCartIcon() {
-    const { loaded, items, getItemCount, getTotal } = useShoppingCart()
+    const { loaded, items, justAdded, dismissAdded, getItemCount, getTotal } = useShoppingCart()
     const [opened, setOpened] = useState(false)
 
     const itemCount = getItemCount()
@@ -17,18 +19,34 @@ export default function ShoppingCartIcon() {
             <Image width={40} height={40} src='/shopping-bag.png' alt='Home' className="h-fit cursor-pointer" onMouseEnter={() => setOpened(true)} />
         </Link>
         {loaded && <span className="absolute top-3.5 text-center w-[40px] pointer-events-none">{itemCount}</span>}
-        {opened && <div className="absolute min-w-sm min-h-48 flex flex-col gap-4 px-8 py-10 right-0 translate-y-4 panel-outline bg-white rounded-sm" onMouseLeave={() => setOpened(false)}>
+        {opened && <div className="absolute popup-detail panel-outline right-0 translate-y-4" onMouseLeave={() => setOpened(false)}>
             <p>Cart:</p>
             {items.map((item) => <ItemCart item={item} />)}
-            <div className="flex justify-between">
+            <div className="occupy-space">
                 <p>Items:</p>
                 <span>{itemCount}</span>
             </div>
-            <div className="flex justify-between text-lg">
+            <div className="occupy-space text-lg">
                 <p>Subtotal:</p>
-                <span>${total}</span>
+                <span>{formatPrice(total)}</span>
             </div>
-            <Link href="cart"><button className="button w-full rounded-md">Checkout</button></Link>
+            <Link href="cart"><button className="button w-full rounded-md h-10">Checkout</button></Link>
+        </div>}
+        {justAdded && <div className="fixed popup-detail right-8 top-8 panel-outline ">
+            <div className="occupy-space">
+                <p>Added:</p>
+                <CgClose className="standard-icon" onClick={dismissAdded} />
+            </div>
+            <ItemCart item={justAdded} />
+            <div className="occupy-space">
+                <p>Items:</p>
+                <span>{justAdded.quantity}</span>
+            </div>
+            <div className="occupy-space text-lg">
+                <p>Subtotal:</p>
+                <span>{formatTotal(justAdded)}</span>
+            </div>
+            <Link href="cart"><button className="button w-full rounded-md h-10">Checkout</button></Link>
         </div>}
     </div>
 }

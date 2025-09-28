@@ -1,5 +1,5 @@
 import { Suspense} from "react"
-import ProductPanel from "../page/ProductPanel"
+import ProductView from "./ProductView"
 import { ProductData } from "@/lib/types"
 import { getBaseUrl } from "@/lib/util"
 
@@ -9,7 +9,7 @@ export default async function ProductDisplay() {
 
     return <div className="m-auto max-w-[90%] grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4">
         <Suspense fallback={<p>Hello</p>}>
-            {products?.map((pr: ProductData) => <ProductPanel product={pr} />)}
+            {products?.map((pr: ProductData) => <ProductView product={pr} />)}
         </Suspense>
     </div>
 }

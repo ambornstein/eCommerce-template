@@ -1,7 +1,7 @@
 
 //Product record from database
 
-export interface ProductData {
+export type ProductData = {
     _id: string
     name: string
     description: string
@@ -11,7 +11,18 @@ export interface ProductData {
     slugName: string
 }
 
-export interface ItemOrderData {
+export type ItemOrderData = {
     product: ProductData,
     quantity: number
+}
+
+export type SubCollectionData = {
+    label: string
+    slug: string
+}
+
+export type CollectionData = {
+    label: string,
+    slug: string,
+    subcollections: SubCollectionData[]
 }

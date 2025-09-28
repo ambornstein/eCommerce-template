@@ -1,10 +1,7 @@
 'use client'
-import { getBaseUrl } from "@/lib/util";
-import { forwardRef, useEffect, useState } from "react";
 
-const clamp = (min: number, max: number, val: number) => {
-    return Math.max(Math.min(max, val), min)
-}
+import { clamp, getBaseUrl } from "@/lib/util";
+import { useEffect, useState } from "react";
 
 function RecordRow(props: { record: any, index: number, updateRecords: (id: string, obj: any) => void }) {
     const [stockCount, setStockCount] = useState<number>(props.record.stockCount)
@@ -12,7 +9,7 @@ function RecordRow(props: { record: any, index: number, updateRecords: (id: stri
 
     useEffect(() => {
         setUnavailableCount(clamp(0, stockCount, unavailableCount))
-        props.updateRecords(props.record._id, { stockCount:stockCount, unavailableCount:unavailableCount })
+        props.updateRecords(props.record._id, { stockCount, unavailableCount })
     }, [unavailableCount, stockCount])
 
     return <tr key={props.index}>

@@ -3,6 +3,7 @@
 import { useShoppingCart } from "@/components/context/ShoppingCartContext"
 import QuantityCounter from "@/components/input/QuantityCounter";
 import { imageBaseUrl } from "@/lib/config";
+import { formatTotal, formatPrice } from "@/lib/util";
 import Image from "next/image";
 import Link from "next/link";
 import { CgClose } from "react-icons/cg";
@@ -12,7 +13,7 @@ export default function CartPage() {
 
     return <div className="m-auto min-h-screen container">
         <h2 className="text-2xl w-fit m-auto">Shopping Cart</h2>
-        {items.length ?
+        {loaded ?
             <div>
                 <table className="w-full [&_td]:border-y-1 [&_th]:py-2 [&_td]:py-4 [&_th]:border-zinc-400 [&_td]:border-zinc-400 ">
                     <thead className="text-[12px]">
@@ -24,13 +25,13 @@ export default function CartPage() {
                         </tr>
                     </thead>
                     <tbody>
-                        {loaded && items.map((cartItem) =>
+                        {items.map((cartItem) =>
                             <tr>
                                 <td className="space-x-4">
-                                    <Image width={100} height={100} src={imageBaseUrl + cartItem.product.images![0]} alt='image' className="inline size-48" />
+                                    <Image width={100} height={100} src={imageBaseUrl + cartItem.product.images![0]} alt='image' className="inline size-32" />
                                     <p className="inline">{cartItem.product.name}</p>
                                 </td>
-                                <td className="text-center">${cartItem.product.price}</td>
+                                <td className="text-center">{formatPrice(cartItem.product.price)}</td>
                                 <td>
                                     <div className="w-fit m-auto">
                                         <QuantityCounter quantity={cartItem.quantity} setQuantity={(q) => setItemQuantity(cartItem.product, q)} />
@@ -41,7 +42,7 @@ export default function CartPage() {
                                         </div>
                                     </div>
                                 </td>
-                                <td className="text-right">${(cartItem.product.price * cartItem.quantity).toFixed(2)}</td>
+                                <td className="text-right">{formatTotal(cartItem)}</td>
                             </tr>
                         )}
                     </tbody>
