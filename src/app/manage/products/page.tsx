@@ -24,7 +24,7 @@ export default async function ProductDashboard() {
                         <td className="cursor-pointer"><Link href={`http://localhost:3000/manage/products/${product._id}`}>{product.name} </Link></td>
                         <td className="text-center">0</td>
                         <td className="text-center">{product.price}</td>
-                        <td>{product.category}</td>
+                        <td>{product.collection}</td>
                     </tr>
                 )}
             </tbody>

@@ -6,8 +6,9 @@ export type ProductData = {
     name: string
     description: string
     price: number
-    category?: number
-    images?: string[]
+    collection: string
+    subcollection: string
+    images: string[]
     slugName: string
 }
 

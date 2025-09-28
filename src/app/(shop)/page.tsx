@@ -1,11 +1,13 @@
 import HeroCollection from "@/components/page/HeroCollection";
 import ProductDisplay from "@/components/page/ProductDisplay";
+import { getBaseUrl } from "@/lib/util";
 
-export default function Home() {
-  return (
-    <div className="min-h-[600px] flex flex-col gap-8 py-4 ">
-      <HeroCollection />
-      <ProductDisplay />
-    </div>
-  );
+export default async function Home() {
+  const data = await fetch(`${getBaseUrl()}/api/product`)
+  const products = await data.json()
+
+  return <>
+    <HeroCollection />
+    <ProductDisplay products={products} />
+  </>
 }

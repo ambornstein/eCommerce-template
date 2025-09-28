@@ -5,8 +5,9 @@ export const ProductSchema = new mongoose.Schema({
     name: String,
     price: { type: Number, min: 0 },
     description: String,
-    category: { type: String, required: false },
-    images: { type: [String], requred: false },
+    collection: { type: String, required: false },
+    subcollection: { type: String, required: false },
+    images: [String],
     slugName: { type: String, required: false }
 })
 

@@ -6,7 +6,7 @@ import { CgClose } from "react-icons/cg"
 import { imageBaseUrl } from "@/lib/config"
 
 const ImageChip = (props: { imageUrl: string, imageName: string, remove: () => void }) => {
-    return <div className="h-fit w-full p-1 grid grid-cols-[auto_1fr_20px] gap-2 items-center panel-outline ">
+    return <div className="h-fit w-full p-1 grid grid-cols-[auto_1fr_20px] gap-4 items-center">
         <img className="object-contain size-24" src={props.imageUrl} />
         <p>{props.imageName}</p>
         <CgClose onClick={props.remove} />
@@ -64,12 +64,13 @@ export default function ImageUploadPanel(props: ImagePanelProps) {
         const images = formData.getAll('image')
 
         props.addImages(images.map(m => m.toString()))
+        setMenuOpen(false)
     }
 
     return <div>
-        <div className="flex flex-col gap-4 items-center">
-            <div className="rounded-lg outline cursor-pointer w-full place-items-center" onClick={() => setMenuOpen(!menuOpen)}>
-                <BiPlus className="size-12" />
+        <div className="panel p-4 flex flex-col gap-4 items-center h-full">
+            <div className="rounded-lg panel-outline cursor-pointer w-full place-items-center" onClick={() => setMenuOpen(!menuOpen)}>
+                <BiPlus className="size-10" />
                 <p>Add Images</p>
             </div>
             {props.images?.map((i, j) =>

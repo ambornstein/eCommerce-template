@@ -1,5 +1,6 @@
 import { updateProductImages } from "@/lib/actions";
 import dbConnect from "@/lib/db";
+import { InventoryRecord } from "@/lib/models/inventoryRecord";
 import { Product } from "@/lib/models/product";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -50,6 +51,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
     const { id } = await params;
     try {
         await Product.findByIdAndDelete(id)
+        await InventoryRecord.findOneAndDelete({product: id})
 
         return new NextResponse("Product " + id + " deleted", { status: 200 })
     } catch (e) {

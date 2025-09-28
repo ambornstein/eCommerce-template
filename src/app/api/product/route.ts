@@ -4,8 +4,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
     await dbConnect();
+    
     try {
-        const products = await Product.find({})
+        const filters = Object.fromEntries(request.nextUrl.searchParams)
+        const products = await Product.find(filters)
 
         return NextResponse.json(products)
     } catch (e) {

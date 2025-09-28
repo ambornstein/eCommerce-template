@@ -1,11 +1,13 @@
 'use client'
 
-import { ProductData } from "@/lib/types";
+import { CollectionData, ProductData } from "@/lib/types";
 import ImageUploadPanel from "./ImageUploadPanel";
 import { FormEvent, useEffect, useState } from "react";
 import { redirect } from "next/navigation";
 
-export default function ProductForm(props: { product?: ProductData }) {
+export default function ProductForm(props: { product?: ProductData, }) {
+    const [collections, setCollections] = useState<CollectionData[]>([])
+    const [selectedCollection, setSelectedCollection] = useState<string | undefined>(undefined)
     const [images, setImages] = useState<string[]>([])
 
     function addImages(imageNames: string[]) {
@@ -45,10 +47,19 @@ export default function ProductForm(props: { product?: ProductData }) {
     }
 
     useEffect(() => {
-        if (props.product) setImages(props.product.images!)
+        fetch("/api/collection").then(res => res.json()).then(data => setCollections(data))
+    }, [])
+
+    useEffect(() => {
+        if (props.product) {
+            setImages(props.product.images!)
+            if (props.product.collection) {
+                setSelectedCollection(props.product.collection)
+            }
+        }
     }, [props.product])
 
-    return <div className="grid grid-cols-[auto_200px] gap-4">
+    return <div className="relative grid grid-cols-[auto_300px] gap-4">
         <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
             <input type="hidden" name="id" defaultValue={props.product?._id} />
             {images?.map((i, j) => <input type="hidden" name="image" value={i} key={j} />)}
@@ -65,17 +76,38 @@ export default function ProductForm(props: { product?: ProductData }) {
                     </label>
                     <span className="absolute -translate-y-7 translate-x-2">$</span>
                 </div>
-                <label>Category
-                    <input name="category" required={false} type="text" className="input-field block w-full" defaultValue={props.product?.category} />
-                </label>
+
+                <div>
+                    <label className="occupy-space">
+                        Collection
+                        <span className="text-zinc-400">Optional</span>
+                    </label>
+                    <select name="collection" required={false} className="block w-full input-field" onChange={e => setSelectedCollection(e.target.value)}>
+                        <option value="">- - -</option>
+                        {collections.map(c =>
+                            <option selected={c.slug == props.product?.collection} value={c.slug}>{c.label}</option>
+                        )}
+                    </select>
+                </div>
+                <div>
+                    <label className="occupy-space">
+                        <span>Sub-Collection</span>
+                        <span className="text-zinc-400">Optional</span>
+                    </label>
+                    <select name="subcollection" required={false} className="block w-full input-field"
+                        defaultValue={props.product?.subcollection ?? ""}>
+                        <option value="">- - -</option>
+                        {collections.find(val => val.slug == selectedCollection)?.subcollections.map(c =>
+                            <option selected={c.slug == props.product?.subcollection} value={c.slug}>{c.label}</option>
+                        )}
+                    </select>
+                </div>
+                <div className="self-end space-x-2">
+                    <input type="submit" className="button" />
+                    {props.product && <button className="button w-fit" onClick={handleDelete}>Delete</button>}
+                </div>
             </div>
-            <div className="self-end space-x-2">
-                <input type="submit" className="button" />
-                {props.product && <button className="button w-fit" onClick={handleDelete}>Delete</button>}
-            </div>
-        </form>
-        <div className="h-full w-full">
-            <ImageUploadPanel images={images} addImages={addImages} removeImage={removeImage} />
-        </div>
-    </div>
+        </form >
+        <ImageUploadPanel images={images} addImages={addImages} removeImage={removeImage} />
+    </div >
 }

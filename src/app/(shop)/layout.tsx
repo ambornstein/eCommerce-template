@@ -8,7 +8,9 @@ export default function ShopLayout({
 }>) {
     return <div>
         <Header />
-        {children}
+        <div className="m-auto min-h-[600px] max-w-[90%] flex flex-col gap-8 py-4">
+            {children}
+        </div>
         <Footer />
     </div>
 }

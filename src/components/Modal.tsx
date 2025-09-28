@@ -23,8 +23,8 @@ export default function Modal(props: ModalProps) {
     if (!props.isOpen) return null
 
     return (
-        <div className="fixed top-0 left-0 w-screen h-full center">
-            <div onClick={close} className="w-full h-full bg-zinc-600/50" />
+        <div className="fixed top-0 left-0 w-screen h-screen z-1 center">
+            <div onClick={close} className="w-full h-full bg-zinc-300/50" />
             <div className="flex flex-col absolute w-fit h-fit bg-zinc-100 panel-outline pt-4">
                 <MdClose onClick={close} className="absolute right-4 top-4 cursor-pointer size-6 " />
                 {props.children}
