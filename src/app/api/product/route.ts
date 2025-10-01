@@ -4,12 +4,31 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
     await dbConnect();
-    
-    try {
-        const filters = Object.fromEntries(request.nextUrl.searchParams)
-        const products = await Product.find(filters)
 
-        return NextResponse.json(products)
+    try {
+        const params = Object.fromEntries(request.nextUrl.searchParams)
+
+        let filter = {}
+        if (!!params['collection']) {
+            filter = { ...filter, collection: params['collection'] }
+
+            if (!!params['subcollection']) {
+                filter = { ...filter, subcollection: params['subcollection'] }
+            }
+        }
+
+        if (!!params['page']) {
+            const perPage = Number(params['perPage'])
+            const page = Number(params['page'])
+            const products = await Product.find(filter).skip((page - 1) * perPage).limit(perPage)
+
+            return NextResponse.json(products)
+        }
+        else {
+            const products = await Product.find(filter)
+
+            return NextResponse.json(products)
+        }
     } catch (e) {
         if (e instanceof Error) {
             return new NextResponse(e.message, { status: 500 })

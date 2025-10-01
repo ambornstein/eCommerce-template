@@ -1,5 +1,5 @@
-import ProductDisplay from "@/components/page/ProductDisplay"
 import { getBaseUrl } from "@/lib/util"
+import PaginatedProducts from "../_components/PaginatedProducts"
 
 export default async function SubcollectionPage({ params }: {
     params: Promise<{ mainSlug: string, subSlug: string }>
@@ -7,11 +7,14 @@ export default async function SubcollectionPage({ params }: {
 
     const { mainSlug, subSlug } = await params
     const targetUrl = new URL(`${getBaseUrl()}/api/product`)
+    const countUrl = new URL(`${getBaseUrl()}/api/product/count`)
     targetUrl.searchParams.append("collection", mainSlug)
     targetUrl.searchParams.append("subcollection", subSlug)
+    countUrl.searchParams.append("collection", mainSlug)
+    countUrl.searchParams.append("subcollection", subSlug)
+    
+    const countData = await fetch(countUrl.href)
+    const count = await countData.json()
 
-    const data = await fetch(targetUrl.href)
-    const products = await data.json()
-
-    return <ProductDisplay products={products} />
+    return <PaginatedProducts productCount={count} perPage={4} fetchEndpoint={targetUrl.href} />
 }

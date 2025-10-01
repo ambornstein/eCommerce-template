@@ -26,7 +26,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 
     const data = await request.json()
     try {
-        await Product.findByIdAndUpdate(id, )
+        await Product.findByIdAndUpdate(id, data)
 
         return new NextResponse("Product inventory" + id + " updated", { status: 200 })
     } catch (e) {
