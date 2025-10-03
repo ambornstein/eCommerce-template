@@ -1,13 +1,17 @@
 import AddToCart from "@/components/input/AddToCart";
-import ImageGallery from "@/components/product/ImageGallery";
+import ImageGallery from "@/components/image/ImageGallery";
+import { ProductData } from "@/lib/types";
 import { getBaseUrl } from "@/lib/util";
 
 export default async function ProductPage({ params }: {
     params: Promise<{ slug: string }>
 }) {
     const slug = (await params).slug
-    const data = await fetch(`${getBaseUrl()}/api/product/slug/${slug}`)
-    const product = await data.json()
+    const data = await fetch(`${getBaseUrl()}/api/product/slug/${slug}`)    
+    const product: ProductData = await data.json()
+
+    const inventory = await fetch(`${getBaseUrl()}/api/product/${product._id}/inventory`)
+    const stock = await inventory.json()
 
     return <div className="m-auto container min-h-screen flex flex-col items-center gap-8 mt-4">
         <div className="flex flex-row min-h-[600px]">
@@ -17,7 +21,7 @@ export default async function ProductPage({ params }: {
                     <h2 className="text-2xl">{product.name}</h2>
                     <h2 className="text-2xl">${product.price}</h2>
                 </div>
-                <AddToCart product={product}/>
+                <AddToCart product={product} invRecord={stock}/>
             </div>
         </div>
         <div className="w-lg">

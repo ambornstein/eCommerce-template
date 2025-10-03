@@ -8,7 +8,8 @@ export const ProductSchema = new mongoose.Schema({
     collection: { type: String, required: false },
     subcollection: { type: String, required: false },
     images: [String],
-    slugName: { type: String, required: false }
+    slugName: { type: String, required: false },
+    createdAt: {type: Date, default: Date.now}
 })
 
 ProductSchema.pre('save', function (next, options) {

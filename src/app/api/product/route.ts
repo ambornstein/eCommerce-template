@@ -9,6 +9,7 @@ export async function GET(request: NextRequest) {
         const params = Object.fromEntries(request.nextUrl.searchParams)
 
         let filter = {}
+        let options = {}
         if (!!params['collection']) {
             filter = { ...filter, collection: params['collection'] }
 
@@ -17,18 +18,19 @@ export async function GET(request: NextRequest) {
             }
         }
 
+        if (!!params['sort']) {
+            options = {...options, sort: params['sort']}
+        }
+     
         if (!!params['page']) {
-            const perPage = Number(params['perPage'])
+            const perPage = Number(params['perPage'] ?? 4)
             const page = Number(params['page'])
-            const products = await Product.find(filter).skip((page - 1) * perPage).limit(perPage)
-
-            return NextResponse.json(products)
+            options = {...options, skip: (page - 1) * perPage, limit: perPage}
         }
-        else {
-            const products = await Product.find(filter)
 
-            return NextResponse.json(products)
-        }
+        const products = await Product.find(filter, null, options)
+ 
+        return NextResponse.json(products)
     } catch (e) {
         if (e instanceof Error) {
             return new NextResponse(e.message, { status: 500 })

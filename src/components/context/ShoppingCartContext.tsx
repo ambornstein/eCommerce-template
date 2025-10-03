@@ -1,12 +1,13 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { ProductData } from "@/lib/types";
+import { ItemOrderData, ProductData } from "@/lib/types";
 
 const ShoppingCartContext = createContext({
-    items: [] as CartItem[],
-    justAdded: undefined as CartItem | undefined,
+    items: [] as ItemOrderData[],
+    justAdded: undefined as ItemOrderData | undefined,
     addItem: (product: ProductData, quantity: number) => { },
+    findItemQuantity: (id: string): number => 0,
     removeItem: (product: ProductData) => { },
     setItemQuantity: (product: ProductData, quantity: number) => { },
     getItemCount: (): number => 0,
@@ -15,18 +16,13 @@ const ShoppingCartContext = createContext({
     loaded: false
 })
 
-interface CartItem {
-    product: ProductData,
-    quantity: number,
-}
-
 export function ShoppingCartProvider({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    const [cartItems, setCartItems] = useState<CartItem[]>([])
-    const [justAdded, setJustAdded] = useState<CartItem | undefined>(undefined)
+    const [cartItems, setCartItems] = useState<ItemOrderData[]>([])
+    const [justAdded, setJustAdded] = useState<ItemOrderData | undefined>(undefined)
     const [loaded, setLoaded] = useState(false)
 
     useEffect(() => {
@@ -73,6 +69,10 @@ export function ShoppingCartProvider({
         return cartItems.find((val) => val.product._id == id)
     }
 
+    function findItemQuantity(id: string) {
+        return findItem(id)?.quantity ?? 0;
+    }
+
     function addItem(product: ProductData, quantity: number) {
         const item = findItem(product._id);
         if (item) {
@@ -100,7 +100,7 @@ export function ShoppingCartProvider({
     function setItemQuantity(product: ProductData, quantity: number) {
         const items = [...cartItems]
         const itemIndex = items.findIndex((val) => val.product._id == product._id)
-        console.log(itemIndex)
+      
         if (itemIndex >= 0) {
             items[itemIndex].quantity = quantity
             setCartItems(items)
@@ -111,7 +111,7 @@ export function ShoppingCartProvider({
         updateCart()
     }
 
-    return <ShoppingCartContext.Provider value={{ items: cartItems, justAdded, dismissAdded, removeItem, addItem, setItemQuantity, loaded, getItemCount, getTotal }}>
+    return <ShoppingCartContext.Provider value={{ items: cartItems, justAdded, dismissAdded, removeItem, addItem, setItemQuantity, findItemQuantity, loaded, getItemCount, getTotal }}>
         {children}
     </ShoppingCartContext.Provider>
 }

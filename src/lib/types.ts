@@ -27,3 +27,11 @@ export type CollectionData = {
     slug: string,
     subcollections: SubCollectionData[]
 }
+
+export type InventoryRecord = {
+    _id: string,
+    product: ProductData
+    stockCount: number
+    orderedCount: number
+    availableCount: number
+}

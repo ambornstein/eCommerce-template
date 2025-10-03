@@ -3,7 +3,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useState } from "react"
-import { useShoppingCart } from "./context/ShoppingCartContext"
+import { useShoppingCart } from "../context/ShoppingCartContext"
 import ItemCart from "./ItemCart"
 import { CgClose } from "react-icons/cg"
 import { formatTotal, formatPrice } from "@/lib/util"
@@ -19,7 +19,7 @@ export default function ShoppingCartIcon() {
             <Image width={40} height={40} src='/shopping-bag.png' alt='Home' className="h-fit cursor-pointer" onMouseEnter={() => setOpened(true)} />
         </Link>
         {loaded && <span className="absolute top-3.5 text-center w-[40px] pointer-events-none">{itemCount}</span>}
-        {opened && <div className="absolute popup-detail panel-outline right-0 translate-y-4" onMouseLeave={() => setOpened(false)}>
+        {opened && <div className="absolute z-10 popup-detail panel-outline right-0 translate-y-4" onMouseLeave={() => setOpened(false)}>
             <p>Cart:</p>
             {items.map((item) => <ItemCart item={item} />)}
             <div className="occupy-space">
@@ -30,9 +30,9 @@ export default function ShoppingCartIcon() {
                 <p>Subtotal:</p>
                 <span>{formatPrice(total)}</span>
             </div>
-            <Link href="cart"><button className="button w-full rounded-md h-10">Checkout</button></Link>
+            <Link href="/cart"><button className="button w-full rounded-md h-10">Checkout</button></Link>
         </div>}
-        {justAdded && <div className="fixed popup-detail right-8 top-8 panel-outline ">
+        {justAdded && <div className="fixed z-10 popup-detail right-8 top-8 panel-outline ">
             <div className="occupy-space">
                 <p>Added:</p>
                 <CgClose className="standard-icon" onClick={dismissAdded} />
@@ -46,7 +46,7 @@ export default function ShoppingCartIcon() {
                 <p>Subtotal:</p>
                 <span>{formatTotal(justAdded)}</span>
             </div>
-            <Link href="cart"><button className="button w-full rounded-md h-10">Checkout</button></Link>
+            <Link href="/cart"><button className="button w-full rounded-md h-10">Checkout</button></Link>
         </div>}
     </div>
 }

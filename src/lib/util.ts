@@ -1,3 +1,4 @@
+import { imageBaseUrl } from "./config"
 import { ItemOrderData } from "./types"
 
 export function isMobile() {
@@ -23,5 +24,9 @@ export function formatPrice(price: number) {
 }
 
 export const clamp = (min: number, max: number, val: number) => {
-    return Math.max(Math.min(max, val), min)
+  return Math.max(Math.min(max, val), min)
+}
+
+export const imageUrlOrFallback = (imgString?: string) => {
+  return imgString ? imageBaseUrl + imgString : '/file.svg'
 }

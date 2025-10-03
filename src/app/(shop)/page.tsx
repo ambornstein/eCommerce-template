@@ -3,7 +3,7 @@ import ProductDisplay from "@/components/page/ProductDisplay";
 import { getBaseUrl } from "@/lib/util";
 
 export default async function Home() {
-  const data = await fetch(`${getBaseUrl()}/api/product`)
+  const data = await fetch(`${getBaseUrl()}/api/product?page=1`)
   const products = await data.json()
   
   return <>

@@ -1,33 +1,42 @@
 'use client'
 
-import { imageBaseUrl } from "@/lib/config"
-import { ProductData } from "@/lib/types"
-import { useState } from "react"
+import Image from "next/image"
+import { InventoryRecord, ProductData } from "@/lib/types"
+import { useEffect, useState } from "react"
 import Modal from "../Modal"
 import Link from "next/link"
-import { useShoppingCart } from "../context/ShoppingCartContext"
-import ImageCarousel from "../product/ImageCarousel"
-import { formatPrice } from "@/lib/util"
+import ImageCarousel from "../image/ImageCarousel"
+import { formatPrice, getBaseUrl, imageUrlOrFallback } from "@/lib/util"
+import AddToCart from "../input/AddToCart"
 
 export default function ProductView(props: { product: ProductData }) {
     const [quickBuyOpen, setQuickBuyOpen] = useState(false)
     const [mouseOver, setMouseOver] = useState(false)
-    const { addItem } = useShoppingCart();
-    const [amount, setAmount] = useState(1)
+    const [inventory, setInventory] = useState<InventoryRecord | undefined>(undefined)
 
-    const imageURL = props.product.images![0] ? imageBaseUrl + props.product.images![0] : '/file.svg'
+    function updateInventory() {
+        fetch(`${getBaseUrl()}/api/product/${props.product._id}/inventory`).then(res => res.json()).then(data => setInventory(data))
+    }
+
+    useEffect(() => {
+        updateInventory()
+    }, [])
 
     const productLink = `/products/${props.product.slugName}`
 
     return <div className="flex flex-col gap-8 p-2 overflow-hidden" onMouseEnter={() => setMouseOver(true)} onMouseLeave={() => setMouseOver(false)}>
         <Link href={productLink} className="h-full">
-            <img src={imageURL} alt='Home' className="object-contain hover:scale-110 transition-all" />
+            <Image width={300} height={300} src={imageUrlOrFallback(props.product.images[0])} alt='Home' className="m-auto hover:scale-110 transition-all" />
         </Link>
-        <button className={`w-48 outline-1 text-center p-2 self-center cursor-pointer ${mouseOver ? 'visible' : 'invisible'}`} onClick={() => setQuickBuyOpen(true)}>Quick Buy</button>
-        <dl className="*:block text-lg">
-            <Link href={productLink}><dd>{props.product.name}</dd></Link>
-            <dd>{formatPrice(props.product.price)}</dd>
-        </dl>
+        {inventory && inventory.availableCount <= 0 && <div className="absolute dark-contrast m-2 p-2 rounded-md text-xl">Sold Out</div>}
+        <button className={`w-48 outline-1 text-center p-2 self-center cursor-pointer ${mouseOver ? 'visible' : 'invisible'}`}
+            onClick={() => setQuickBuyOpen(true)}>Quick Buy</button>
+        <Link href={productLink}>
+            <dl className="*:block text-lg">
+                <dd>{props.product.name}</dd>
+                <dd>{formatPrice(props.product.price)}</dd>
+            </dl>
+        </Link>
         <Modal isOpen={quickBuyOpen} setIsOpen={(value) => setQuickBuyOpen(value)}>
             <div className="flex flex-col w-xl">
                 <div className="mt-2 mx-8 space-y-8">
@@ -40,15 +49,8 @@ export default function ProductView(props: { product: ProductData }) {
                         </dl>
                     </div>
                 </div>
-                <div className="p-8 bg-zinc-200 w-full h-fit grid grid-cols-[auto_1fr_1fr] gap-4 items-center rounded-b-lg">
-                    <label className="flex flex-col h-fit">
-                        <p className="text-[12px]">Quantity</p>
-                        <input type="number" min={1} max={10} value={amount} onChange={(e) => setAmount(Number(e.target.value))} className="w-24 input-field" />
-                    </label>
-                    <button className="bg-red-600 text-zinc-200 rounded-lg h-full max-w-72" onClick={() => {
-                        addItem(props.product, amount)
-                        setQuickBuyOpen(false)
-                    }}>Add To Cart</button>
+                <div className="p-8 bg-zinc-200 w-full h-fit grid grid-cols-[1fr_1fr] gap-4 items-center rounded-b-lg">
+                    <AddToCart product={props.product} invRecord={inventory} />
                 </div>
             </div>
         </Modal>

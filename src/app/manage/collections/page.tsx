@@ -21,6 +21,7 @@ export default function CollectionsPage() {
     function fetchCollections() {
         fetch('/api/collection').then(res => res.json()).then(data => setCollections(data))
     }
+    
     useEffect(() => {
         fetchCollections()
     }, [])
@@ -28,13 +29,13 @@ export default function CollectionsPage() {
     async function submitCollection(e: FormData) {
         if (e.get("label"))
             await fetch('/api/collection', { method: 'POST', body: JSON.stringify(Object.fromEntries(e)) })
-        fetchCollections()
+            fetchCollections()
     }
 
     async function submitSubcollection(collSlug: string, e: FormData) {
         if (e.get("label"))
             await fetch(`/api/collection/${collSlug}/subcollection`, { method: 'POST', body: JSON.stringify(Object.fromEntries(e)) })
-        fetchCollections()
+            fetchCollections()
     }
 
     async function deleteCollection(collSlug: string) {

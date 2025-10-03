@@ -7,7 +7,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     await dbConnect();
     const { id } = await params;
     try {
-        const products = await InventoryRecord.findOne({ product: id }).populate('product').exec()
+        const products = await InventoryRecord.findOne({ product: id })
 
         return NextResponse.json(products)
     } catch (e) {

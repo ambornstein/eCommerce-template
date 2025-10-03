@@ -1,5 +1,5 @@
 import Image from "next/image"
-import ShoppingCartIcon from "../ShoppingCartIcon"
+import ShoppingCartIcon from "../cart/ShoppingCartIcon"
 import Link from "next/link"
 import { getBaseUrl } from "@/lib/util"
 import { CollectionData } from "@/lib/types"
