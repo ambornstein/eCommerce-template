@@ -54,12 +54,12 @@ export default function CollectionsPage() {
 
     return <div className="panel p-2 w-full min-h-96">
         <h2>Collections</h2>
-        <p>To split products into groups, use collections. Products can be assigned to a specific collection and even a sub-collection, but if they don't have either of these, they will only show up in "All Products".</p>
+        <p>To split products into groups, use collections. Products can be assigned to a specific collection and even a sub-collection, but if they don&apos;t have either of these, they will only show up in &quot;All Products&quot;.</p>
         <div className="flex flex-col gap-4 mt-8">
             <label>New Collection</label>
             <SingleEntryForm buttonText="Create Collection" action={submitCollection} />
-            {collections.map(collection =>
-                <div className="panel-outline p-2 rounded-md h-fit">
+            {collections.map((collection, index) =>
+                <div key={index} className="panel-outline p-2 rounded-md h-fit">
                     <div className="occupy-space">
                         <h2>{collection.label}</h2>
                         <div className="flex-natural">
@@ -71,7 +71,7 @@ export default function CollectionsPage() {
                         <summary>Subcollections</summary>
                         <SingleEntryForm buttonText="Add Subcollection" action={(form) => submitSubcollection(collection.slug, form)} />
                         <div className="flex flex-wrap w-full gap-2 mt-4">
-                            {collection.subcollections.map(sub => <div className="flex-natural bg-white px-2 rounded-full outline-1 outline-zinc-500">
+                            {collection.subcollections.map((sub, index) => <div key={index} className="flex-natural bg-white px-2 rounded-full outline-1 outline-zinc-500">
                                 <p>{sub.label}</p>
                                 <CgClose className="size-4" onClick={() => deleteSubcollection(collection.slug, sub)} />
                             </div>)}

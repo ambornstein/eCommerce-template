@@ -12,7 +12,7 @@ export default function AddToCart(props: { product: ProductData, invRecord?: Inv
     const [validQuantity, setValidQuantity] = useState(0);
 
     useEffect(() => {
-        setValidQuantity(props.invRecord?.availableCount! - findItemQuantity(props.product._id))
+        setValidQuantity((props.invRecord?.availableCount ?? 0) - findItemQuantity(props.product._id))
 
     }, [props.invRecord, justAdded])
 

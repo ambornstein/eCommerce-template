@@ -84,8 +84,8 @@ export default function ProductForm(props: { product?: ProductData, }) {
                     </label>
                     <select name="collection" required={false} className="block w-full input-field" onChange={e => setSelectedCollection(e.target.value)}>
                         <option value="">- - -</option>
-                        {collections.map(c =>
-                            <option selected={c.slug == props.product?.collection} value={c.slug}>{c.label}</option>
+                        {collections.map((c, index) =>
+                            <option key={index} selected={c.slug == props.product?.collection} value={c.slug}>{c.label}</option>
                         )}
                     </select>
                 </div>
@@ -97,8 +97,8 @@ export default function ProductForm(props: { product?: ProductData, }) {
                     <select name="subcollection" required={false} className="block w-full input-field"
                         defaultValue={props.product?.subcollection ?? ""}>
                         <option value="">- - -</option>
-                        {collections.find(val => val.slug == selectedCollection)?.subcollections.map(c =>
-                            <option selected={c.slug == props.product?.subcollection} value={c.slug}>{c.label}</option>
+                        {collections.find(val => val.slug == selectedCollection)?.subcollections.map((c, index) =>
+                            <option key={index} selected={c.slug == props.product?.subcollection} value={c.slug}>{c.label}</option>
                         )}
                     </select>
                 </div>

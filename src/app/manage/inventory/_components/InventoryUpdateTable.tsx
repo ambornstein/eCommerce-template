@@ -49,7 +49,7 @@ export default function InventoryUpdateTable(props: { inventoryItems: Array<Inve
             </thead>
             <tbody>
                 {props.inventoryItems.map((record: InventoryRecord, idx) =>
-                    <RecordRow record={record} index={idx} updateRecords={pushUpdate} />)}
+                    <RecordRow record={record} key={idx} index={idx} updateRecords={pushUpdate} />)}
             </tbody>
         </table>
         <button className="button" onClick={saveUpdate}>Save</button>
