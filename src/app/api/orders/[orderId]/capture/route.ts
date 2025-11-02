@@ -1,10 +1,10 @@
 import { ordersController } from "@/lib/paypal";
 import { ApiError } from "@paypal/paypal-server-sdk";
 
-export async function POST(request: Request, { params }: { params: Promise<{ orderID: string }> }) {
+export async function POST(request: Request, { params }: { params: Promise<{ orderId: string }> }) {
     try {
-        const { orderID } = await params
-        const result = await captureOrder(orderID);
+        const { orderId } = await params
+        const result = await captureOrder(orderId);
         return new Response(JSON.stringify(result!.jsonResponse), { status: result!.httpStatusCode })
     } catch (error) {
         console.error("Failed to create order:", error);
