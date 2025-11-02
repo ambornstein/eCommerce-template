@@ -15,9 +15,9 @@ export default function PageSelector(props: { index: number, pageCount: number }
 
         {pageIndex - 2 > 2 && <span>...</span>}
 
-        {[-2, -1, 0, 1, 2].map((value) =>
+        {[-2, -1, 0, 1, 2].map((value, index) =>
             (pageIndex + value > 1 && pageIndex + value < props.pageCount)
-                ? <Link href={`?page=${pageIndex + value}`} className={`${value == 0 && 'border-b-2'}`}>
+                ? <Link key={index} href={`?page=${pageIndex + value}`} className={`${value == 0 && 'border-b-2'}`}>
                     {pageIndex + value}
                 </Link>
                 : null
