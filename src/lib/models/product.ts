@@ -9,7 +9,9 @@ export const ProductSchema = new mongoose.Schema({
     subcollection: { type: String, required: false },
     images: [String],
     slugName: { type: String, required: false },
-    createdAt: {type: Date, default: Date.now}
+    createdAt: { type: Date, default: Date.now }
+}, {
+    suppressReservedKeysWarning: true
 })
 
 ProductSchema.pre('save', function (next, options) {

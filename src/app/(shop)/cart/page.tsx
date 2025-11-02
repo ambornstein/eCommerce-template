@@ -21,7 +21,7 @@ export default function CartPage() {
                         </tr>
                     </thead>
                     <tbody>
-                        {items.map((cartItem) => <CartProduct item={cartItem} />)}
+                        {items.map((cartItem, idx) => <CartProduct key={idx} item={cartItem} />)}
                     </tbody>
                 </table>
                 <div className="ml-auto mt-4 w-fit">

@@ -1,8 +1,9 @@
-import { ordersController } from "@/lib/paypal";
+import { client, ordersController } from "@/lib/paypal";
 import { ItemOrderData } from "@/lib/types";
-import { ApiError, CheckoutPaymentIntent } from "@paypal/paypal-server-sdk";
+import { calculateTotal } from "@/lib/util";
+import { ApiError, CheckoutPaymentIntent, Item, OrderRequest } from "@paypal/paypal-server-sdk";
 
-export default async function POST(request: Request) {
+export async function POST(request: Request) {
     try {
         // use the cart information passed from the front-end to calculate the order amount detals
         const cart = await request.json()
@@ -15,34 +16,32 @@ export default async function POST(request: Request) {
 
 }
 const createOrder = async (cart: ItemOrderData[]) => {
-    const collect = {
+    const collect: {body: OrderRequest, prefer: string} = {
         body: {
             intent: CheckoutPaymentIntent.Capture,
             purchaseUnits: [
                 {
                     amount: {
                         currencyCode: "USD",
-                        value: "100",
+                        value: calculateTotal(cart).toFixed(2),
                         breakdown: {
                             itemTotal: {
                                 currencyCode: "USD",
-                                value: "100",
+                                value: calculateTotal(cart).toFixed(2),
                             },
                         },
                     },
                     // lookup item details in `cart` from database
-                    items: [
-                        {
-                            name: "T-Shirt",
+                    items: cart.map((item) => {
+                        return {
+                            name: item.product.name,
                             unitAmount: {
                                 currencyCode: "USD",
-                                value: "100",
+                                value: (item.product.price * item.quantity).toFixed(2),
                             },
-                            quantity: "1",
-                            description: "Super Fresh Shirt",
-                            sku: "sku01",
-                        },
-                    ],
+                            quantity: item.quantity.toFixed(0),
+                        }
+                    }),
                 },
             ],
         },
@@ -54,6 +53,7 @@ const createOrder = async (cart: ItemOrderData[]) => {
         const { body, ...httpResponse } = await ordersController.createOrder(
             collect
         );
+
         // Get more response info...
         // const { statusCode, headers } = httpResponse;
         return {

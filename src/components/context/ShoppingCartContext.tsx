@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import { ItemOrderData, ProductData } from "@/lib/types";
+import { calculateTotal } from "@/lib/util";
 
 const ShoppingCartContext = createContext({
     items: [] as ItemOrderData[],
@@ -62,7 +63,7 @@ export function ShoppingCartProvider({
     }
 
     function getTotal() {
-        return cartItems.reduce((sum, current) => sum + (current.product.price * current.quantity), 0)
+        return calculateTotal(cartItems)
     }
 
     function findItem(id: string) {

@@ -19,4 +19,4 @@ const client = new Client({
 const ordersController = new OrdersController(client);
 const paymentsController = new PaymentsController(client);
 
-export { ordersController, paymentsController }
+export { ordersController, paymentsController, client }

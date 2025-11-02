@@ -23,6 +23,10 @@ export function formatPrice(price: number) {
   })
 }
 
+export function calculateTotal(items: ItemOrderData[] ) {
+  return items.reduce((sum, current) => sum + (current.product.price * current.quantity), 0)
+}
+
 export const clamp = (min: number, max: number, val: number) => {
   return Math.max(Math.min(max, val), min)
 }

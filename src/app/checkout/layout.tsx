@@ -1,4 +1,4 @@
-import CheckoutTotal from "@/components/CheckoutTotal";
+import CheckoutTotal from "@/components/checkout/CheckoutTotal";
 
 export default function CheckoutLayout({
     children,

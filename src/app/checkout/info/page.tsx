@@ -1,4 +1,3 @@
-import CheckoutTotal from "@/components/CheckoutTotal";
 import Link from "next/link";
 import { BsArrowLeftSquare } from "react-icons/bs";
 

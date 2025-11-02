@@ -21,7 +21,7 @@ export default function ShoppingCartIcon() {
         {loaded && <span className="absolute top-3.5 text-center w-[40px] pointer-events-none">{itemCount}</span>}
         {opened && <div className="absolute z-10 popup-detail panel-outline right-0 translate-y-4" onMouseLeave={() => setOpened(false)}>
             <p>Cart:</p>
-            {items.map((item) => <ItemCart item={item} />)}
+            {items.map((item, idx) => <ItemCart item={item} key={idx}/>)}
             <div className="occupy-space">
                 <p>Items:</p>
                 <span>{itemCount}</span>

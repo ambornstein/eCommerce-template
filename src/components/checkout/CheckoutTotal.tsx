@@ -1,6 +1,6 @@
 'use client'
 
-import { useShoppingCart } from "./context/ShoppingCartContext"
+import { useShoppingCart } from "../context/ShoppingCartContext";
 import ItemOrder from "./ItemOrder";
 
 export default function CheckoutTotal() {
@@ -9,7 +9,7 @@ export default function CheckoutTotal() {
     const total = getTotal()
     return <div className="lg:fixed relative w-auto lg:w-[45%] h-screen right-0 bg-zinc-100 border-l-1 border-zinc-200 p-12">
         <div className="w-sm flex flex-col gap-4">
-            {items.map((item) => <ItemOrder item={item} />)}
+            {items.map((item, idx) => <ItemOrder key={idx} item={item} />)}
             <div className="flex justify-between">
                 <h3>Subtotal</h3>
                 <p className="inline">${total}</p>

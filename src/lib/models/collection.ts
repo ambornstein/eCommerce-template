@@ -9,6 +9,8 @@ export const CollectionSchema = new mongoose.Schema({
     label: String,
     slug: String,
     subcollections: [{ type: Schema.Types.ObjectId, ref: 'SubCollection' }]
+}, {
+    suppressReservedKeysWarning: true
 })
 
 CollectionSchema.pre('save', function (next, options) {
