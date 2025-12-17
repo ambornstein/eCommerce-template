@@ -1,4 +1,4 @@
-# About the Project
+## About the Project
 An incomplete imitation of a Shopify eCommerce Site. It can be freely used in its current state, but it lacks a checkout function and authentication right now. The main functionality is in frontend elements and REST API implementations via Next.js Route Handlers. 
 
 
