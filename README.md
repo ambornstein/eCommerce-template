@@ -1,6 +1,8 @@
 # About the Project
 An incomplete imitation of a Shopify eCommerce Site. It can be freely used in its current state, but it lacks a checkout function and authentication right now. The main functionality is in frontend elements and REST API implementations via Next.js Route Handlers. 
 
+<img width="1901" height="909" alt="image" src="https://github.com/user-attachments/assets/2bfadc0c-814f-430d-bf49-a4048c3d450e" />
+
 ## Key Features
 * Inventory and Product Management System (for admins)
 * Dynamic Navbar with Product Categories and Subcategories
